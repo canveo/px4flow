@@ -4,11 +4,6 @@ project(px4flow)
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs image_transport px_comm message_generation)
 find_package(Boost REQUIRED COMPONENTS thread system signals)
 
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
-
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp std_msgs sensor_msgs image_transport px_comm message_runtime
@@ -35,6 +30,10 @@ target_link_libraries(px4flow_node
 
 add_dependencies(px4flow_node px_comm_gencpp)
 
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 #############
 ## Install ##
