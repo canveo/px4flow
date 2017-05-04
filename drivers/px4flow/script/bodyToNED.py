@@ -5,6 +5,7 @@ from px_comm.msg import OpticalFlow
 from geometry_msgs.msg import TwistStamped
 from std_msgs.msg import Header
 from numpy import *
+import tf
 
 q = array([0,0,0,1])
 v = array([0,0,0])
@@ -16,8 +17,11 @@ z_now = 0
 t_now = 0
 
 def imucallback(msg):
+    q_enu = (msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w)
+    euler = tf.transformations.euler_from_quaternion(q_enu)
+    quaternion = tf.transformations.quaternion_from_euler(euler[0], -euler[1], -euler[2])
     global q
-    q = array([msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w])
+    q = array([quaternion[0], quaternion[1], quaternion[2], quaternion[3]])
 
 def toNED(msg):
     global vx_arr, vy_arr
@@ -60,7 +64,7 @@ def toNED(msg):
 
 if __name__ == '__main__':
     rospy.init_node('bodyToNED')
-    rospy.Subscriber('/mavros/imu/data', Imu, imucallback)
+    rospy.Subscriber('/imu/data', Imu, imucallback)
     pub = rospy.Publisher('velocity', TwistStamped, queue_size=0)	
 #    rate = rospy.Rate(1)
 #    for i in xrange(5):
