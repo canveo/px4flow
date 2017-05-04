@@ -8,14 +8,14 @@
 -->
     <include file="$(find px4flow)/launch/px4flow.launch"/>
 
-    <include file="$(find mavros)/launch/px4.launch"/>
+    <include file="$(find myahrs_driver)/launch/myahrs_driver.launch"/>
 <!--
     <include file="$(find vicon_xb)/launch/vicon_xb.launch"/>
 
     <node name="datarecord" pkg="rosbag" type="record" 
 		    args="-o $(find px4flow)/bag/flight 
                     /px4flow/opt_flow
-                    /mavros/imu/data 
+                    /imu/data 
                     /vicon_xb/viconPoseTopic
                     "/>
 
